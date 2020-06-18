@@ -146,6 +146,28 @@ class Instructor extends Lambdasian {
   grade(student,subject) {
     return `${student.name} receives a perfect score on ${subject}`;
   }
+  gradeAssignment(student) {
+    console.log(`Initial grade: ${student.grade}`);
+    const operator = Math.floor((Math.random() * 2));
+    console.log(operator);
+    if (operator === 1) {
+      student.grade = student.grade + Math.floor((Math.random() * 100) + 1 );
+      console.log(`Positive grade: ${student.grade}`);
+      if (student.grade > 100) {
+        student.grade = 100;
+        console.log(`Grade reset to 100`);
+      }
+      return student.grade;
+    } else {
+      student.grade = student.grade - Math.floor((Math.random() * 100) + 1 );
+      console.log(`Negative grade: ${student.grade}`);
+      if (student.grade <= 0) {
+        student.grade = 0;
+        console.log(`Grade reset to 0`);
+        return student.grade;
+        }
+      }
+    }
 }
 
 /*
@@ -169,17 +191,27 @@ class Student extends Lambdasian {
     this.previousBackground = argument.previousBackground;
     this.className = argument.className;
     this.favSubjects = argument.favSubjects;
+    this.grade = Math.floor((Math.random() * 100) + 1 );
+    this.canGraduate = false;
+    }
+    listSubjects() {
+      return this.favSubjects.toString();
+    }
+    PRAssignment(subject) {
+      return `${this.name} has submitted a PR for ${subject}`;
+    }
+    sprintChallenge(subject) {
+      return `${this.name} has begun sprint challenge on ${subject}`;
+    }
+    graduate() {
+      if (this.grade > 70) {
+        this.canGraduate = true;
+        return `${this.name} has a score of ${this.grade} and can graduate!`;
+      } else {
+        return `${this.name} does not yet have enough points to graduate.`
+      }
+    }
   }
-  listSubjects() {
-    return this.favSubjects.toString();
-  }
-  PRAssignment(subject) {
-    return `${this.name} has submitted a PR for ${subject}`;
-  }
-  sprintChallenge(subject) {
-    return `${this.name} has begun sprint challenge on ${subject}`;
-  }
-}
 
 /*
   TASK 6
@@ -194,8 +226,18 @@ class Student extends Lambdasian {
         + `standUp` a method that takes in a slack channel and returns `{name} announces to {channel}, @channel standy times!`
         + `debugsCode` a method that takes in a student object and a subject and returns `{name} debugs {student.name}'s code on {subject}`
 */
-class ProjectManager {
-
+class ProjectManager extends Instructor {
+  constructor(argument) {
+    super(argument);
+    this.gradClassName = argument.gradClassName;
+    this.favInstructor = argument.favInstructor;
+  }
+  standUp(slackChannel) {
+    return `${this.name} announces to ${slackChannel}, @channel standy times!`;
+  }
+  debugsCode(student, subject) {
+    return `${this.name} debugs ${student.name}'s code on ${subject}`;
+  }
 }
 
 /*
@@ -206,6 +248,40 @@ class ProjectManager {
       + This method, when called, will check the grade of the student and see if they're ready to graduate from Lambda School
       + If the student's grade is above a 70% let them graduate! Otherwise go back to grading their assignments to increase their score.
 */
+
+const newInstructor = new Instructor({
+  name: 'Brit',
+  age: 32,
+  location: 'Niagra Falls',
+  specialty: 'JS',
+  favLanguage: 'Hebrew',
+  catchPhrase: 'Unsure'
+});
+
+const newPM = new ProjectManager ({
+  name: 'Brit',
+  age: 32,
+  location: 'Niagra Falls',
+  specialty: 'JS',
+  favLanguage: 'Hebrew',
+  catchPhrase: 'Unsure',
+  gradClassName: 'Web33',
+  favInstructor: 'Brit'
+});
+
+const newStudent = new Student({
+  name: 'Jeremiah',
+  age: 39,
+  location: 'San Fran',
+  previousBackground: 'Previous background',
+  className: 'Web33',
+  favSubjects: 'Coffee, beer'
+});
+
+console.log(newInstructor.gradeAssignment(newStudent));
+console.log(newStudent.graduate());
+console.log(newPM.gradeAssignment(newStudent));
+console.log(newStudent.graduate());
 
 ///////// END OF CHALLENGE /////////
 ///////// END OF CHALLENGE /////////
