@@ -147,23 +147,23 @@ class Instructor extends Lambdasian {
     return `${student.name} receives a perfect score on ${subject}`;
   }
   gradeAssignment(student) {
-    console.log(`Initial grade: ${student.grade}`);
+    // console.log(`Initial grade: ${student.grade}`);
     const operator = Math.floor((Math.random() * 2));
-    console.log(operator);
+    // console.log(operator);
     if (operator === 1) {
       student.grade = student.grade + Math.floor((Math.random() * 100) + 1 );
-      console.log(`Positive grade: ${student.grade}`);
+      // console.log(`Positive grade: ${student.grade}`);
       if (student.grade > 100) {
         student.grade = 100;
-        console.log(`Grade reset to 100`);
+        // console.log(`Grade reset to 100`);
       }
       return student.grade;
     } else {
       student.grade = student.grade - Math.floor((Math.random() * 100) + 1 );
-      console.log(`Negative grade: ${student.grade}`);
+      // console.log(`Negative grade: ${student.grade}`);
       if (student.grade <= 0) {
         student.grade = 0;
-        console.log(`Grade reset to 0`);
+        // console.log(`Grade reset to 0`);
         return student.grade;
         }
       }
